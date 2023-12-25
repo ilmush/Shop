@@ -15,15 +15,12 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    class Meta:
-        abstract = True
-
     category = models.ForeignKey(Category, verbose_name='Категория товара', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, verbose_name='Наименование товара')
     slug = models.SlugField(unique=True)
     image = models.ImageField(verbose_name='Изображение')
     description = models.TextField(verbose_name='Описание товара', null=True)
-    price = models.DecimalField(max_length=9, decimal_places=2, verbose_name='Цена')
+    price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Цена')
 
     def __str__(self):
         return self.title
@@ -59,4 +56,13 @@ class Customer(models.Model):
 
     def __str__(self):
         return "Покупатель: {} {}".format(self.user.first_name, self.user.last_name)
+
+
+class Specification(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    title = models.CharField(max_length=255, verbose_name='Название характеристики')
+    value = models.CharField(max_length=255, verbose_name='Значение характеристики')
 
