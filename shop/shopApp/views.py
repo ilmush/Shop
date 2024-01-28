@@ -9,7 +9,12 @@ from .mixins import CategoryDetailMixin
 class BaseView(View):
     def get(self, request, *args, **kwargs):
         category = Category.objects.all()
-        return render(request, 'base.html', {'category': category})
+        products = Product.objects.all()
+        context = {
+            'category': category,
+            'products': products
+        }
+        return render(request, 'base.html', context)
 
 
 class CategoryDetailView(CategoryDetailMixin, DetailView):
@@ -23,6 +28,6 @@ class CategoryDetailView(CategoryDetailMixin, DetailView):
 class ProductDetailView(CategoryDetailMixin, DetailView):
     model = Product
     queryset = Product.objects.all()
-    context_object_name = 'product'
+    context_object_name = 'products'
     template_name = 'product_detail.html'
     slug_url_kwarg = 'slug'

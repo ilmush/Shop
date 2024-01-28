@@ -4,19 +4,19 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image.url }}" /></div>
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ products.image.url }}" /></div>
                     <div class="col-md-6">
-                        <h1 class="display-5 fw-bolder">{{ product.title }}</h1>
+                        <h1 class="display-5 fw-bolder">{{ products.title }}</h1>
                         <div class="fs-5 mb-5">
                             <span class="text-decoration-line-through">$45.00</span>
-                            <span>₽{{ product.price }}</span>
+                            <span>₽{{ products.price }}</span>
                         </div>
-                        <p class="lead">{{ product.description }}</p>
+                        <p class="lead">{{ products.description }}</p>
 
                         <p class="lead">Характеристики товара:</p>
                         <table class="table">
                             <tbody>
-                            {% for s in product.specifications.all %}
+                            {% for s in products.specifications.all %}
                             <tr>
                                 <td>{{ s.title }}</td>
                                 <td>{{ s.value }}</td>
