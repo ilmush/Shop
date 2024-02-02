@@ -48,6 +48,19 @@ class AddToCartView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
+class DeleteFromCartView(CartMixin, View):
+    def get(self, request, *args, **kwargs):
+        product_slug = kwargs.get('slug')
+        product = Product.objects.get(slug=product_slug)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, product=product
+        )
+        self.cart.products.remove(cart_product)
+        cart_product.delete()
+        self.cart.save()
+        return HttpResponseRedirect('/cart/')
+
+
 class CartView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         category = Category.objects.all()
