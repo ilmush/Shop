@@ -26,6 +26,11 @@ class CategoryDetailView(CartMixin, CategoryDetailMixin, DetailView):
     template_name = 'category_detail.html'
     slug_url_kwarg = 'slug'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cart'] = self.cart
+        return context
+
 
 class ProductDetailView(CartMixin, CategoryDetailMixin, DetailView):
     model = Product
@@ -33,6 +38,11 @@ class ProductDetailView(CartMixin, CategoryDetailMixin, DetailView):
     context_object_name = 'products'
     template_name = 'product_detail.html'
     slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cart'] = self.cart
+        return context
 
 
 class AddToCartView(CartMixin, View):
@@ -57,6 +67,20 @@ class DeleteFromCartView(CartMixin, View):
         )
         self.cart.products.remove(cart_product)
         cart_product.delete()
+        self.cart.save()
+        return HttpResponseRedirect('/cart/')
+
+
+class ChangeQTYView(CartMixin, View):
+    def post(self, request, *args, **kwargs):
+        product_slug = kwargs.get('slug')
+        product = Product.objects.get(slug=product_slug)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, product=product
+        )
+        qty = int(request.POST.get('qty'))
+        cart_product.qty = qty
+        cart_product.save()
         self.cart.save()
         return HttpResponseRedirect('/cart/')
 
