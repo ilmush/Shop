@@ -1,13 +1,14 @@
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
 
-from .models import Category, Customer, Cart
+from .models import Category, Customer, Cart, Product
 
 
 class CategoryDetailMixin(SingleObjectMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['category'] = Category.objects.all()
+        context['category_products'] = Product.objects.filter(category=self.object.id)
         return context
 
 
