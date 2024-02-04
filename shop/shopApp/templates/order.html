@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3 class="text-center mt-55 mb-5">
+  Оформление заказа
+</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Наименование</th>
+      <th scope="col">Изображение</th>
+      <th scope="col">Цена</th>
+      <th scope="col">Количество</th>
+      <th scope="col">Общая цена</th>
+      <th scope="col">Действие</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in cart.products.all %}
+    <tr>
+      <!-- Title -->
+      <td scope="row">
+        <b> {{ item.product.title }} </b>
+      </td>
+
+      <!-- Product preview -->
+      <td class="w-25">
+        <img
+          class="card-img-top mb-5 mb-md-0"
+          src="{{ item.product.image.url }}"
+        />
+      </td>
+
+      <!-- Price -->
+      <td>
+        {{ item.product.price }} руб.
+      </td>
+
+      <!-- Count -->
+      <td>
+        {{ item.qty }}
+      </td>
+
+      <!-- Final price -->
+      <td>
+        {{ item.final_price }} руб.
+      </td>
+
+    </tr>
+    {% endfor %}
+    <tr>
+      <td colspan="2"></td>
+
+      <td>Итого:</td>
+
+      <td>{{ cart.total_products }}</td>
+
+      <td>
+        <strong> {{ cart.final_price }} руб. </strong>
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>
+<hr>
+<h3 class="text-center mt-55 mb-5">Форма заказа</h3>
+<form action="{% url 'make_order' %}" method="POST">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <div class="text-center">
+    <button type="submit" class="btn btn-dark m-2">Оформить заказ</button>
+  </div>
+
+</form>
+
+{% endblock content %}

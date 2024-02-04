@@ -97,6 +97,13 @@
           <td>
             <strong> {{ cart.final_price }} руб. </strong>
           </td>
+          <td>
+            <a href="{% url 'order' %}">
+              <button class="btn btn-outline-dark flex-shrink-0">
+                Перейти к оформлению заказа
+              </button>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
