@@ -1,242 +1,247 @@
-    {% extends 'base.html' %} {% block content %}
-    <h3 class="text-center mt-55 mb-5">
-      Ваша корзина {% if not cart.products.count %}пуста{% endif %}
-    </h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Наименование</th>
-          <th scope="col">Изображение</th>
-          <th scope="col">Цена</th>
-          <th scope="col">Количество</th>
-          <th scope="col">Общая цена</th>
-          <th scope="col">Действие</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in cart.products.all %}
-        <tr>
+{% extends 'base.html' %} {% block content %}
 
-          <!-- Title -->
-          <td scope="row">
-            <b> {{ item.product.title }} </b>
-          </td>
+<h3 class="text-center mt-55 mb-5">
+  Ваша корзина {% if not cart.products.count %}пуста{% endif %}
+</h3>
 
-          <!-- Product preview -->
-          <td class="w-25">
-            <img
-              class="card-img-top mb-5 mb-md-0"
-              src="{{ item.product.image.url }}"
-            />
-          </td>
+{% if cart.products.count %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Наименование</th>
+        <th scope="col">Изображение</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Количество</th>
+        <th scope="col">Общая цена</th>
+        <th scope="col">Действие</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart.products.all %}
+      <tr>
 
-          <!-- Price -->
-          <td id="{{ item.product.slug }}" class="product-price">
-            {{ item.product.price }} руб.
-          </td>
+        <!-- Title -->
+        <td scope="row">
+          <b> {{ item.product.title }} </b>
+        </td>
 
-          <!-- Count -->
-          <td>
-            <div class="d-flex align-self-center">
-                <button
-                  id="{{ item.product.slug }}"
-                  class="decrement-qty-button btn btn-outline-dark"
-                >
-                  -
-                </button>
+        <!-- Product preview -->
+        <td class="w-25">
+          <img
+            class="card-img-top mb-5 mb-md-0"
+            src="{{ item.product.image.url }}"
+          />
+        </td>
 
-                <form id="myform" action="{% url 'change_qty' slug=item.product.slug %}" method="POST">
-                  {% csrf_token %}
-                  <input
-                    id="{{ item.product.slug }}"
-                    class="product-qty-input form-control text-center mx-2"
-                    min="1"
-                    type="num"
-                    value="{{ item.qty }}"
-                    name="qty"
-                    style="max-width: 3rem"
-                  />
-                </form>
+        <!-- Price -->
+        <td id="{{ item.product.slug }}" class="product-price">
+          {{ item.product.price }} руб.
+        </td>
 
-                <button
-                  id="{{ item.product.slug }}"
-                  class="increment-qty-button btn btn-outline-dark"
-                >
-                  +
-                </button>
-
-              </div>
-
-              <button type="submit" form="myform" class="btn btn-dark flex-shrink-0 m-1">
-                Сохранить
+        <!-- Count -->
+        <td>
+          <div class="d-flex align-self-center">
+              <button
+                id="{{ item.product.slug }}"
+                class="decrement-qty-button btn btn-outline-dark"
+              >
+                -
               </button>
-          </td>
 
-          <!-- Final price -->
-          <td id="{{ item.product.slug }}"
-              class="product-final-price">
-            {{ item.final_price }} руб.
-          </td>
+              <form id="myform" action="{% url 'change_qty' slug=item.product.slug %}" method="POST">
+                {% csrf_token %}
+                <input
+                  id="{{ item.product.slug }}"
+                  class="product-qty-input form-control text-center mx-2"
+                  min="1"
+                  type="num"
+                  value="{{ item.qty }}"
+                  name="qty"
+                  style="max-width: 3rem"
+                />
+              </form>
 
-          <!-- Actions -->
-          <td>
-            <a
-              class="btn btn-outline-dark flex-shrink-0"
-              href="{% url 'delete_from_cart' slug=item.product.slug %}"
-            >
-              Удалить из корзины
-            </a>
-
-          </td>
-        </tr>
-        {% endfor %}
-        <tr>
-          <td colspan="2"></td>
-          <td>Итого:</td>
-          <td>{{ cart.total_products }}</td>
-          <td>
-            <strong> {{ cart.final_price }} руб. </strong>
-          </td>
-          <td>
-            <a href="{% url 'order' %}">
-              <button class="btn btn-outline-dark flex-shrink-0">
-                Перейти к оформлению заказа
+              <button
+                id="{{ item.product.slug }}"
+                class="increment-qty-button btn btn-outline-dark"
+              >
+                +
               </button>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+            </div>
+
+            <button type="submit" form="myform" class="btn btn-dark flex-shrink-0 m-1">
+              Сохранить
+            </button>
+        </td>
+
+        <!-- Final price -->
+        <td id="{{ item.product.slug }}"
+            class="product-final-price">
+          {{ item.final_price }} руб.
+        </td>
+
+        <!-- Actions -->
+        <td>
+          <a
+            class="btn btn-outline-dark flex-shrink-0"
+            href="{% url 'delete_from_cart' slug=item.product.slug %}"
+          >
+            Удалить из корзины
+          </a>
+
+        </td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="2"></td>
+        <td>Итого:</td>
+        <td>{{ cart.total_products }}</td>
+        <td>
+          <strong> {{ cart.final_price }} руб. </strong>
+        </td>
+        <td>
+          <a href="{% url 'order' %}">
+            <button class="btn btn-outline-dark flex-shrink-0">
+              Перейти к оформлению заказа
+            </button>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
   <script>
-      // Utils
-      function getClearNumber(str) {
-        return Number(str?.replace(/[^0-9]/g, "")) || 0;
-      }
+    // Utils
+    function getClearNumber(str) {
+      return Number(str?.replace(/[^0-9]/g, "")) || 0;
+    }
 
-      const totalCountInner = document.getElementById("total-cart-qty");
-      const totalPriceInner = document.getElementById("total-cart-price");
+    const totalCountInner = document.getElementById("total-cart-qty");
+    const totalPriceInner = document.getElementById("total-cart-price");
 
-      const qtyInputs = document.getElementsByClassName("product-qty-input");
-      const finalPriceCells = document.getElementsByClassName("product-final-price");
-      const incrementButtons = document.getElementsByClassName("increment-qty-button");
-      const decrementButtons = document.getElementsByClassName("decrement-qty-button");
+    const qtyInputs = document.getElementsByClassName("product-qty-input");
+    const finalPriceCells = document.getElementsByClassName("product-final-price");
+    const incrementButtons = document.getElementsByClassName("increment-qty-button");
+    const decrementButtons = document.getElementsByClassName("decrement-qty-button");
 
-      // Функция по слагу продукта находит в документе инпуты и цену из нужного ряда
-      function getProductInfo(slug) {
-        if (!slug) return null;
+    // Функция по слагу продукта находит в документе инпуты и цену из нужного ряда
+    function getProductInfo(slug) {
+      if (!slug) return null;
 
-        const input = document.querySelector(`.product-qty-input#${slug}`);
-        const finalPriceCell = document.querySelector(`.product-final-price#${slug}`);
-        const priceCell = document.querySelector(`.product-price#${slug}`);
+      const input = document.querySelector(`.product-qty-input#${slug}`);
+      const finalPriceCell = document.querySelector(`.product-final-price#${slug}`);
+      const priceCell = document.querySelector(`.product-price#${slug}`);
 
-        if (!finalPriceCell || !priceCell || !input) return null;
+      if (!finalPriceCell || !priceCell || !input) return null;
 
-        const price = getClearNumber(priceCell.innerHTML);
-        const value = getClearNumber(input?.value) || 1;
+      const price = getClearNumber(priceCell.innerHTML);
+      const value = getClearNumber(input?.value) || 1;
 
-        return { input, finalPriceCell, value, price };
-      }
+      return { input, finalPriceCell, value, price };
+    }
 
-      // Функция обновляет состояние цены и кол-ва в "итого"
-      function updateFinalBlock() {
-        const totalCount = Array.from(qtyInputs).reduce((result, input) => {
-          return result + getClearNumber(input?.value);
-        }, 0);
+    // Функция обновляет состояние цены и кол-ва в "итого"
+    function updateFinalBlock() {
+      const totalCount = Array.from(qtyInputs).reduce((result, input) => {
+        return result + getClearNumber(input?.value);
+      }, 0);
 
-        const totalPrice = Array.from(finalPriceCells).reduce((result, cell) => {
-          return result + getClearNumber(cell?.innerHTML);
-        }, 0);
+      const totalPrice = Array.from(finalPriceCells).reduce((result, cell) => {
+        return result + getClearNumber(cell?.innerHTML);
+      }, 0);
 
-        totalCountInner.innerHTML = totalCount;
-        totalPriceInner.innerHTML = `${totalPrice} руб.`;
-      }
+      totalCountInner.innerHTML = totalCount;
+      totalPriceInner.innerHTML = `${totalPrice} руб.`;
+    }
 
-      // Функция увеличивает кол-во товара в корзине и изменяет итоговую цену
-      function incrementProductCount(slug) {
-        const productInfo = getProductInfo(slug);
+    // Функция увеличивает кол-во товара в корзине и изменяет итоговую цену
+    function incrementProductCount(slug) {
+      const productInfo = getProductInfo(slug);
+
+      if (!productInfo) return;
+
+      const { input, finalPriceCell, value, price } = productInfo;
+
+      const updatedValue = value + 1;
+
+      input.value = updatedValue;
+      finalPriceCell.innerHTML = `${price * updatedValue} руб.`;
+      updateFinalBlock();
+    }
+
+    // Функция уменьшает кол-во товара в корзине и изменяет итоговую цену
+    function decrementProductCount(slug) {
+      const productInfo = getProductInfo(slug);
+
+      if (!productInfo) return;
+
+      const { input, finalPriceCell, value, price } = productInfo;
+
+      const min = isNaN(input?.min) ? 1 : Number(input.min);
+      const updatedValue = value - Number(value > min);
+
+      input.value = updatedValue;
+      finalPriceCell.innerHTML = `${price * updatedValue} руб.`;
+      updateFinalBlock();
+    }
+
+    // Запрещаем ввод любых символов кроме чисел
+    for (const input of qtyInputs) {
+      input.addEventListener("keydown", (event) => {
+        const allowedCombos = [65, 67, 86, 88];
+        const allowedSymbols = ["Backspace", "ArrowLeft", "ArrowRight"];
+
+        // При нажатии на стрелочки вверх и вниз значение будет менятся соответсвенно
+        const commands = {
+          ArrowUp: () => incrementProductCount(input?.id),
+          ArrowDown: () => decrementProductCount(input?.id),
+        };
+
+        const { ctrlKey, key, keyCode } = event;
+
+        if (
+          /^[0-9]+$/.test(key) ||
+          allowedSymbols.includes(key) ||
+          (ctrlKey && allowedCombos.includes(keyCode))
+        ) {
+          return;
+        }
+
+        if (commands?.[key]) {
+          commands[key]();
+        }
+
+        event.preventDefault();
+      });
+
+      input.addEventListener("input", (event) => {
+        const productInfo = getProductInfo(input?.id);
 
         if (!productInfo) return;
 
-        const { input, finalPriceCell, value, price } = productInfo;
+        const { finalPriceCell, value, price } = productInfo;
 
-        const updatedValue = value + 1;
-
-        input.value = updatedValue;
-        finalPriceCell.innerHTML = `${price * updatedValue} руб.`;
+        input.value = value;
+        finalPriceCell.innerHTML = `${price * value} руб.`;
         updateFinalBlock();
-      }
+      });
+    }
 
-      // Функция уменьшает кол-во товара в корзине и изменяет итоговую цену
-      function decrementProductCount(slug) {
-        const productInfo = getProductInfo(slug);
+    // Вешаем листенеры клика на кнопки уменьшения кол-ва товара
+    for (const decrementButton of decrementButtons) {
+      decrementButton.addEventListener("click", () => {
+        decrementProductCount(decrementButton?.id);
+      });
+    }
 
-        if (!productInfo) return;
+    // Вешаем листенеры клика на кнопки увелечения кол-ва товара
+    for (const incrementButton of incrementButtons) {
+      incrementButton.addEventListener("click", () => {
+        incrementProductCount(incrementButton?.id);
+      });
+    }
+  </script>
+{% endif %}
 
-        const { input, finalPriceCell, value, price } = productInfo;
-
-        const min = isNaN(input?.min) ? 1 : Number(input.min);
-        const updatedValue = value - Number(value > min);
-
-        input.value = updatedValue;
-        finalPriceCell.innerHTML = `${price * updatedValue} руб.`;
-        updateFinalBlock();
-      }
-
-      // Запрещаем ввод любых символов кроме чисел
-      for (const input of qtyInputs) {
-        input.addEventListener("keydown", (event) => {
-          const allowedCombos = [65, 67, 86, 88];
-          const allowedSymbols = ["Backspace", "ArrowLeft", "ArrowRight"];
-
-          // При нажатии на стрелочки вверх и вниз значение будет менятся соответсвенно
-          const commands = {
-            ArrowUp: () => incrementProductCount(input?.id),
-            ArrowDown: () => decrementProductCount(input?.id),
-          };
-
-          const { ctrlKey, key, keyCode } = event;
-
-          if (
-            /^[0-9]+$/.test(key) ||
-            allowedSymbols.includes(key) ||
-            (ctrlKey && allowedCombos.includes(keyCode))
-          ) {
-            return;
-          }
-
-          if (commands?.[key]) {
-            commands[key]();
-          }
-
-          event.preventDefault();
-        });
-
-        input.addEventListener("input", (event) => {
-          const productInfo = getProductInfo(input?.id);
-
-          if (!productInfo) return;
-
-          const { finalPriceCell, value, price } = productInfo;
-
-          input.value = value;
-          finalPriceCell.innerHTML = `${price * value} руб.`;
-          updateFinalBlock();
-        });
-      }
-
-      // Вешаем листенеры клика на кнопки уменьшения кол-ва товара
-      for (const decrementButton of decrementButtons) {
-        decrementButton.addEventListener("click", () => {
-          decrementProductCount(decrementButton?.id);
-        });
-      }
-
-      // Вешаем листенеры клика на кнопки увелечения кол-ва товара
-      for (const incrementButton of incrementButtons) {
-        incrementButton.addEventListener("click", () => {
-          incrementProductCount(incrementButton?.id);
-        });
-      }
-    </script>
-    {% endblock content %}
+{% endblock content %}

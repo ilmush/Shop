@@ -38,13 +38,14 @@ class CategoryDetailView(CartMixin, CategoryDetailMixin, DetailView):
 class ProductDetailView(CartMixin, CategoryDetailMixin, DetailView):
     model = Product
     queryset = Product.objects.all()
-    context_object_name = 'products'
+    context_object_name = 'product'
     template_name = 'product_detail.html'
     slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cart'] = self.cart
+        context['related_products'] = Product.objects.order_by('-id')[:4]
         return context
 
 
