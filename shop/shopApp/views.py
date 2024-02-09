@@ -2,7 +2,7 @@ from django.db import transaction
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from .models import *
 from .mixins import CategoryDetailMixin, CartMixin
@@ -10,16 +10,21 @@ from .forms import OrderForm
 from .utils import recalc_cart
 
 
-class BaseView(CartMixin, View):
-    def get(self, request, *args, **kwargs):
-        category = Category.objects.all()
-        products = Product.objects.all()
-        context = {
-            'category': category,
-            'products': products,
-            'cart': self.cart
-        }
-        return render(request, 'base.html', context)
+class BaseView(CartMixin, ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'base.html'
+    slug_url_kwarg = 'slug'
+    paginate_by = 10
+    categories = Category.objects.all()
+    extra_context = {
+        'categories': categories,
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cart'] = self.cart
+        return context
 
 
 class CategoryDetailView(CartMixin, CategoryDetailMixin, DetailView):

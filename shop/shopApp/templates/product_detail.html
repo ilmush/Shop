@@ -31,11 +31,15 @@
                     </table>
 
                     <div class="d-flex">
-                        <input class="form-control text-center me-3"
-                               id="inputQuantity"
-                               type="num"
-                               value="1"
-                               style="max-width: 3rem" />
+                        <form action="{% url 'change_qty' slug=product.slug %}" method="POST">
+                            {% csrf_token %}
+                            <input class="form-control text-center me-3"
+                                   id="product.slug"
+                                   type="num"
+                                   value="1"
+                                   name="qty"
+                                   style="max-width: 3rem" />
+                        </form>
 
                         <a class="btn btn-outline-dark flex-shrink-0"
                            href="{% url 'add_to_cart' slug=product.slug %}">
@@ -57,23 +61,30 @@
                 {% for related_product in related_products %}
                     <div class="col mb-5">
                         <div class="card h-100">
+
                             <!-- Product image-->
                             <img class="card-img-top" src="{{ related_product.image.url }}" alt="..." />
+
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
+
                                     <!-- Product name-->
-                                    <a href="{{ related_product.get_absolute_url }}" class="list-group-item">
+                                    <a href="{{ related_product.get_absolute_url }}"
+                                       class="list-group-item">
                                         <h5 class="fw-bolder">{{ related_product.title }}</h5>
                                     </a>
+
                                     <!-- Product price-->
                                     {{ related_product.price }}
                                 </div>
                             </div>
+
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto" href="{% url 'add_to_cart' slug=related_product.slug %}">
+                                    <a class="btn btn-outline-dark mt-auto"
+                                       href="{% url 'add_to_cart' slug=related_product.slug %}">
                                         Добавить в корзину
                                     </a>
                                 </div>
