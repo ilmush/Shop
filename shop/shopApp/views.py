@@ -33,6 +33,10 @@ class CategoryDetailView(CartMixin, CategoryDetailMixin, DetailView):
     context_object_name = 'category'
     template_name = 'category_detail.html'
     slug_url_kwarg = 'slug'
+    specifications = Specification.objects.all()
+    extra_context = {
+        'specifications': specifications,
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

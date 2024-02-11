@@ -19,103 +19,140 @@
     </head>
     <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand"
-                   href="{% url 'base' %}">
-                    Name shop
-                </a>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'base' %}">Shop name</a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse"
-                     id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-<!--                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>-->
-<!--                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
-<!--                        <li class="nav-item dropdown">-->
-<!--                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>-->
-<!--                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                                <li><a class="dropdown-item" href="#!">All Products</a></li>-->
-<!--                                <li><hr class="dropdown-divider" /></li>-->
-<!--                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>-->
-<!--                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>-->
-<!--                            </ul>-->
-<!--                        </li>-->
-                    </ul>
-                    <a class="btn btn-outline-dark mt-auto"
-                       href="{% url 'cart' %}">
-                        <i class="bi-cart-fill me-1"></i>
-                        Корзина
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">
-                            {{ cart.products.count }}
-                        </span>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active"
+                       data-bs-toggle="offcanvas"
+                       href="#offcanvasExample"
+                       role="button"
+                       aria-controls="offcanvasExample">
+                        Каталог товаров
                     </a>
-                </div>
+                  </li>
+                </ul>
+
+                <form class="d-flex" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success me-2" type="submit">Search</button>
+                </form>
+
+                <a class="btn btn-outline-dark mt-auto"
+                   href="{% url 'cart' %}">
+                    <i class="bi-cart-fill me-1"></i>
+                    Корзина
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">
+                        {{ cart.products.count }}
+                    </span>
+                </a>
             </div>
+          </div>
         </nav>
-        <div class="container-fluid p-4 d-flex h-100">
-            <div id="bdSidebar"
-                 class="d-flex flex-column
-                        flex-shrink-0
-                        p-4
-                        text-black offcanvas-md offcanvas-start">
-                <div class="row">
-                    <div class="list-group">
-                        {% for c in categories %}
-                        <a href="{{ c.get_absolute_url }}" class="list-group-item">{{ c.name }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div>
-                {% block content %}
-                <!-- Section-->
-                <section class="py-5">
-                    <div class="container px-4 px-lg-5 mt-5">
-                        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
-                            {% for product in products %}
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <!-- Product image-->
-                                    <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
-                                    <!-- Product details-->
-                                    <div class="card-body p-4">
-                                        <div class="text-center">
-                                            <!-- Product name-->
-                                            <a href="{{ product.get_absolute_url }}" class="list-group-item">
-                                                <h5 class="fw-bolder">{{ product.title }}</h5>
-                                            </a>
-                                            <!-- Product price-->
-                                            ₽{{ product.price }}
-                                        </div>
-                                    </div>
-                                    <!-- Product actions-->
-                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                        <div class="text-center">
-                                            <a class="btn btn-outline-dark mt-auto"
-                                               href="{% url 'add_to_cart' slug=product.slug %}">
-                                                Добавить в корзину
-                                            </a>
-                                        </div>
-                                    </div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Каталог товаров</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        {% for c in categories %}
+        <a href="{{ c.get_absolute_url }}" class="btn">
+            {{ c.name }}
+        </a>
+        <hr>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <div>
+        {% block content %}
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
+                    {% for product in products %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <a href="{{ product.get_absolute_url }}" class="list-group-item">
+                                        <h5 class="fw-bolder">{{ product.title }}</h5>
+                                    </a>
+                                    <!-- Product price-->
+                                    ₽{{ product.price }}
                                 </div>
                             </div>
-                            {% endfor %}
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto"
+                                       href="{% url 'add_to_cart' slug=product.slug %}">
+                                        Добавить в корзину
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </section>
-            {% endblock content %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+        </section>
+        {% endblock content %}
+    </div>
+
+    <nav class="pagination justify-content-center text-black" aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link link-dark"
+                       href='{% url "base" %}?page={{ page_obj.previous_page_number }}'
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for p in page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-item disabled">
+                {% else %}
+                    <li class="page-item">
+                {% endif %}
+                <a class="page-link link-dark" href="?page={{ p }}">
+                    {{ p }}
+                </a>
+            </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link link-dark"
+                       href='{% url "base" %}?page={{ page_obj.next_page_number }}'
+                       aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 
         <!-- Footer-->
 <!--        <footer class="py-5 bg-dark">-->
