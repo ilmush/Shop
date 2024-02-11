@@ -63,19 +63,25 @@
         </nav>
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Каталог товаров</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        {% for c in categories %}
-        <a href="{{ c.get_absolute_url }}" class="btn">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Каталог товаров</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            {% for c in categories %}
+            <a href="{{ c.get_absolute_url }}" class="btn">
             {{ c.name }}
-        </a>
-        <hr>
-        {% endfor %}
+            </a>
+            <hr>
+            {% endfor %}
 
-      </div>
+            <h4>Фильтры</h4>
+            {% for specification in specifications %}
+            {{ specification.title }}
+            <hr>
+            {% endfor %}
+        </div>
+
     </div>
 
     <div>
@@ -143,13 +149,13 @@
             {% endfor %}
 
             {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link link-dark"
-                       href='{% url "base" %}?page={{ page_obj.next_page_number }}'
-                       aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
+            <li class="page-item">
+                <a class="page-link link-dark"
+                   href='{% url "base" %}?page={{ page_obj.next_page_number }}'
+                   aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
             {% endif %}
         </ul>
     </nav>
