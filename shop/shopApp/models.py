@@ -1,3 +1,4 @@
+from django.contrib.sites import managers
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -21,17 +22,31 @@ class Product(models.Model):
     category = models.ForeignKey(Category, verbose_name='Категория товара', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, verbose_name='Наименование товара')
     slug = models.SlugField(unique=True)
-    image = models.ImageField(verbose_name='Изображение')
+    images = models.ManyToManyField('ImageProduct',
+                                    verbose_name='Изображение',
+                                    related_name='related_image',
+                                    blank=True)
     description = models.TextField(verbose_name='Описание товара', null=True)
-    specifications = models.ManyToManyField('Specification', verbose_name='Характеристики',
+    specifications = models.ManyToManyField('Specification',
+                                            verbose_name='Характеристики',
                                             related_name='related_specification')
     price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Цена')
+
+    objects: managers
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
+
+
+class ImageProduct(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
+    image = models.ImageField(verbose_name='Изображение')
+
+    def __str__(self):
+        return f"Изображение продукта: {self.product.title}"
 
 
 class CartProduct(models.Model):

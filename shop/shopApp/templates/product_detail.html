@@ -5,7 +5,7 @@
         <div class="container px-4 px-lg-5 my-5">
             <div class="row gx-4 gx-lg-5 align-items-center">
                 <div class="col-md-6">
-                    <img class="card-img-top mb-5 mb-md-0" src="{{ product.image.url }}" />
+                    <img class="card-img-top mb-5 mb-md-0" src="{{ product.images.first.image.url }}" />
                 </div>
 
                 <div class="col-md-6">
@@ -63,7 +63,7 @@
                         <div class="card h-100">
 
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ related_product.image.url }}" alt="..." />
+                            <img class="card-img-top" src="{{ related_product.images.first.image.url }}" alt="..." />
 
                             <!-- Product details-->
                             <div class="card-body p-4">

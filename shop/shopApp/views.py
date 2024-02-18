@@ -20,7 +20,7 @@ class BaseView(CartMixin, ListView):
     specifications = Specification.objects.all()
     extra_context = {
         'categories': categories,
-        'specifications': specifications,
+        'specifications': specifications
     }
 
     def get_context_data(self, **kwargs):
