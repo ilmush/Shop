@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
@@ -21,8 +22,10 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
     lookup_field = 'slug'
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['category', 'specifications__value', 'price']
+    search_fields = ['title', 'description', 'specifications__value']
+    ordering_fields = ['price']
 
 
 class CategoryViewSet(ModelViewSet):
