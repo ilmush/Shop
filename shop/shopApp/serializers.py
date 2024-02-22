@@ -9,10 +9,18 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'slug')
 
 
+class SpecificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specification
+        fields = '__all__'
+
+
 class ProductSerializer(serializers.ModelSerializer):
+    specifications = SpecificationSerializer(many=True)
+
     class Meta:
         model = Product
-        fields = ('id', 'category', 'title', 'slug', 'images', 'description', 'price')
+        fields = ('id', 'category', 'title', 'slug', 'images', 'description', 'specifications', 'price')
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -24,12 +32,6 @@ class CartSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = '__all__'
-
-
-class SpecificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Specification
         fields = '__all__'
 
 

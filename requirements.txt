@@ -3,3 +3,4 @@ djangorestframework
 psycopg2==2.8.6
 pillow
 drf-yasg
+django-filter
