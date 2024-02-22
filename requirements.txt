@@ -1,5 +1,4 @@
 Django==4.2.7
+djangorestframework
 psycopg2==2.8.6
 pillow
-django-crispy-forms
-crispy-bootstrap4

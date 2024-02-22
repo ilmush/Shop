@@ -19,10 +19,30 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework.routers import SimpleRouter
+
+from shopApp.views import *
+
+router = SimpleRouter()
+
+router.register(r'product', ProductViewSet)
+router.register(r'category', CategoryViewSet)
+router.register(r'cart', CartViewSet)
+router.register(r'customer', CustomerViewSet)
+router.register(r'specification', SpecificationViewSet)
+router.register(r'order', OrderViewSet)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('shopApp.urls'))
+    path('add-to-cart/<str:slug>/', AddToCartView.as_view(), name='add_to_cart'),
+    path('delete-from-cart/<str:slug>/', DeleteFromCartView.as_view(), name='delete_from_cart'),
+    path('change-qty/<str:slug>/', ChangeQTYView.as_view(), name='change_qty'),
+
 ]
+
+urlpatterns += router.urls
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
