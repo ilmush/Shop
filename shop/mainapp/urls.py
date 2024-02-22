@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 from rest_framework.routers import SimpleRouter
 
+from .yasg import urlpatterns as doc_urls
 from shopApp.views import *
 
 router = SimpleRouter()
@@ -42,7 +43,7 @@ urlpatterns = [
 ]
 
 urlpatterns += router.urls
-
+urlpatterns += doc_urls
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

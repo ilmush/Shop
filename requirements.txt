@@ -2,3 +2,4 @@ Django==4.2.7
 djangorestframework
 psycopg2==2.8.6
 pillow
+drf-yasg
