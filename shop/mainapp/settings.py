@@ -42,9 +42,6 @@ INSTALLED_APPS = [
 
     'shopApp',
 
-    'crispy_forms',
-    'crispy_bootstrap4',
-
 ]
 
 MIDDLEWARE = [
@@ -141,4 +138,3 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
