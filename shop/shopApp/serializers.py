@@ -39,3 +39,9 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+
+class CustomerProductRelationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerProductRelation
+        fields = ('customer', 'product', 'in_bookmarks')

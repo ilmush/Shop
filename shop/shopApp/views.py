@@ -2,9 +2,10 @@ from django.http import HttpResponseRedirect
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from .serializers import *
 from .utils import recalc_cart
@@ -92,3 +93,13 @@ class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+
+class CustomerProductRelationView(UpdateModelMixin, GenericViewSet):
+    queryset = CustomerProductRelation.objects.all()
+    serializer_class = CustomerProductRelationSerializer
+    lookup_field = 'product'
+
+    def get_object(self):
+        obj, _ = CustomerProductRelation.objects.get_or_create(customer=self.request.user,
+                                                               product=self.kwargs['product'])
+        return obj

@@ -143,3 +143,12 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class CustomerProductRelation(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    in_bookmarks = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.customer} and {self.product}"

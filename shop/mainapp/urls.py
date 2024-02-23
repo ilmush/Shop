@@ -32,6 +32,7 @@ router.register(r'cart', CartViewSet)
 router.register(r'customer', CustomerViewSet)
 router.register(r'specification', SpecificationViewSet)
 router.register(r'order', OrderViewSet)
+router.register(r'product_relation', CustomerProductRelation)
 
 
 urlpatterns = [
