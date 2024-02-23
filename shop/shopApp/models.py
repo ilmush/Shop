@@ -10,12 +10,21 @@ User = get_user_model()
 class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя категории')
     slug = models.SlugField(unique=True)
+    subcategory = models.ManyToManyField('Subcategory', verbose_name='Подкатегория')
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
+
+
+class Subcategory(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название подкатегории')
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -152,3 +161,14 @@ class CustomerProductRelation(models.Model):
 
     def __str__(self):
         return f"{self.customer} and {self.product}"
+
+
+class Slider(models.Model):
+    title = models.CharField(max_length=255, verbose_name='Название')
+    image = models.ImageField(verbose_name='Изображение')
+    description = models.TextField(verbose_name='Описание')
+    buttonText = models.CharField(max_length=100, verbose_name='Текст кнопки', null=True, blank=True)
+    buttonURL = models.URLField(verbose_name='URL кнопки', null=True, blank=True)
+
+    def __str__(self):
+        return self.title

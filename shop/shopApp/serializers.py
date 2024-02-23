@@ -3,10 +3,18 @@ from rest_framework import serializers
 from .models import *
 
 
+class SubcategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subcategory
+        fields = '__all__'
+
+
 class CategorySerializer(serializers.ModelSerializer):
+    subcategory = SubcategorySerializer(many=True)
+
     class Meta:
         model = Category
-        fields = ('id', 'name', 'slug')
+        fields = ('id', 'name', 'slug', 'subcategory')
 
 
 class SpecificationSerializer(serializers.ModelSerializer):
